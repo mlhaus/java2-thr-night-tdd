@@ -37,7 +37,7 @@ class PersonTest {
         String expected = buildString(Person.MIN_FIRST_NAME_LENGTH);
         person.setFirstName(expected);
         String actual = person.getFirstName();
-        assertEquals(expected , actual);
+        assertTrue(expected.equals(actual));
     }
 
     @Test
@@ -48,6 +48,41 @@ class PersonTest {
         assertEquals(expected , actual);
     }
 
+    @Test
+    void setFirstNameTooLongBad() {
+        String longFirstName = buildString(Person.MAX_FIRST_NAME_LENGTH + 1);
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setFirstName(longFirstName);
+            }
+        });
+        String expected = "The maximum allowed characters is " + Person.MAX_FIRST_NAME_LENGTH;
+        String actual = exception.getMessage();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setFirstNameTooShortBad() {
+        String shortFirstName = buildString(Person.MIN_FIRST_NAME_LENGTH - 1);
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setFirstName(shortFirstName);
+            }
+        });
+    }
+
+    @Test
+    void setFirstNameNullBad() {
+        String nullFirstName = null;
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setFirstName(nullFirstName);
+            }
+        });
+    }
     @Test
     void getLastName() {
         assertEquals(Person.DEFAULT_LAST_NAME, person.getLastName());
@@ -195,6 +230,104 @@ class PersonTest {
         Person other = new Person();
         other.setFirstName("A");
         assertTrue(person.compareTo(other) > 0);
+    }
+
+    @Test
+    void setLastNameNullBad() {
+        String newLastName = null;
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setLastName(newLastName);
+            }
+        });
+        String expectedMessage = "The last name cannot be null.";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setLastNameMinLettersBad() {
+        String newLastName = buildString(Person.MIN_LAST_NAME_LENGTH - 1);
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setLastName(newLastName);
+            }
+        });
+        String expectedMessage = "The last name must be at least " + Person.MIN_LAST_NAME_LENGTH + " characters in length.";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setLastNameMaxLettersBad() {
+        String newLastName = buildString(Person.MAX_LAST_NAME_LENGTH + 1);
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setLastName(newLastName);
+            }
+        });
+        String expectedMessage = "The last name cannot be more than " + Person.MAX_FIRST_NAME_LENGTH + " characters in length.";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setHeightInInchesMinBad() {
+        int newHeightInInches = Person.MIN_HEIGHT - 1;
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setHeightInInches(newHeightInInches);
+            }
+        });
+        String expectedMessage = "The height in inches cannot be less than " + Person.MIN_HEIGHT;
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setHeightInInchesMaxBad() {
+        int newHeightInInches = Person.MAX_HEIGHT + 1;
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setHeightInInches(newHeightInInches);
+            }
+        });
+        String expectedMessage = "The height in inches cannot be greater than " + Person.MAX_HEIGHT;
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setWeightInPoundsMinBad() {
+        double newWeightInPounds = Person.MIN_WEIGHT - 1;
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setWeightInPounds(newWeightInPounds);
+            }
+        });
+        String expectedMessage = "The weight in pounds cannot be less than " + Person.MIN_WEIGHT;
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void setWeightInPoundsMaxBad() {
+        double newWeightInPounds = Person.MAX_WEIGHT + 1;
+        Exception exception = assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                person.setWeightInPounds(newWeightInPounds);
+            }
+        });
+        String expectedMessage = "The weight in pounds cannot be greater than " + Person.MAX_WEIGHT;
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 

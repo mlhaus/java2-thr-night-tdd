@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SalesTransactionTest {
@@ -104,7 +106,16 @@ class SalesTransactionTest {
     }
 
     @Test
-    void compareTo() {
+    void compareToDate1BeforeDate2() {
         fail();
+    }
+    @Test
+    void compareToDate2BeforeDate1() {
+        fail();
+    }
+    @Test
+    void compareToDate1EqualDate2() {
+        SalesTransaction st2 = new SalesTransaction();
+        assertEquals(salesTransaction.getTransactionDateTime(), st2.getTransactionDateTime());
     }
 }

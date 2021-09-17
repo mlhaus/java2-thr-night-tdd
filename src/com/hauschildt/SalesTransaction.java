@@ -101,6 +101,6 @@ public class SalesTransaction implements Comparable<SalesTransaction> {
 
     @Override
     public int compareTo(SalesTransaction o) {
-        return 0;
+        return this.transactionDateTime.compareTo(o.transactionDateTime);
     }
 }
